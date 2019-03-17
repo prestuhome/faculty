@@ -1,0 +1,35 @@
+@(groups: List[Group])
+
+<h1>Группы</h1>
+<a href="@routes.GroupController.create" class="btn">
+    <input type="image" src="@routes.Assets.versioned("images/create.png")"/>
+</a>
+<table>
+    <thead>
+        <tr>
+            <th>Код</th>
+            <th class="button-cell"></th>
+            <th class="button-cell"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(group <- groups) {
+            <tr>
+                <td>@group.code</td>
+                <td class="button-cell">
+                    <a href="@routes.GroupController.edit(group.id.get)" class="btn">
+                        <input type="image" src="@routes.Assets.versioned("images/edit.svg")"/>
+                    </a>
+                </td>
+                <td class="button-cell">
+                    <button class="crud-button" onClick="deleteObject(
+                            '@routes.GroupController.delete(group.id.get)',
+                            '@routes.HomeController.home'
+                    )">
+                        <input type="image" src="@routes.Assets.versioned("images/delete.png")"/>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

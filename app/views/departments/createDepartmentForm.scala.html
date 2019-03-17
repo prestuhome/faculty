@@ -1,0 +1,19 @@
+@(departmentForm: Form[Department])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@import helper._
+
+@main("Кафедра") {
+    <h1>Создание кафедры</h1>
+    @form(routes.DepartmentController.save(), 'id -> "createDepartmentForm") {
+        <fieldset>
+        @inputText(departmentForm("name"), '_label -> "Наименование")
+        </fieldset>
+    }
+    <div>
+        <button class="btn btn-primary" onclick="sendPostRequest(
+                'createDepartmentForm',
+                '@routes.HomeController.home'
+        )">Сохранить</button>
+        <a href="@routes.HomeController.home" class="btn">Отмена</a>
+    </div>
+}

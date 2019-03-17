@@ -1,0 +1,9 @@
+@(departments: List[Department], groups: List[Group])
+
+@import views.html.departments.departmentsTable
+@import views.html.groups.groupsTable
+
+@main("Оргструктура факультета") {
+    @departmentsTable(departments)
+    @groupsTable(groups)
+}

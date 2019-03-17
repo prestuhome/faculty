@@ -1,0 +1,49 @@
+table {
+    width: 100%;
+}
+
+table, td {
+    border-collapse: collapse;
+    border: 1px solid #000;
+}
+
+thead {
+    display: table;
+    width: calc(100% - 17px);
+}
+
+tbody {
+    display: block;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+th, td {
+    padding: 5px;
+    word-break: break-all;
+}
+
+td.button-cell, th.button-cell {
+    width: 20px;
+}
+
+tr {
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+td {
+    text-align: center;
+    border-bottom: none;
+    border-left: none;
+}
+
+button.crud-button {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline:none;
+}

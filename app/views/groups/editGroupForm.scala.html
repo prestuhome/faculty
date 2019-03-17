@@ -1,0 +1,19 @@
+@(id: Long, groupForm: Form[Group])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@import helper._
+
+@main("Группы") {
+    <h1>Редактирование группы</h1>
+    @form(routes.GroupController.update(id), 'id -> "editGroupForm") {
+        <fieldset>
+        @inputText(groupForm("code"), '_label -> "Код")
+        </fieldset>
+    }
+    <div>
+        <button class="btn btn-primary" onclick="sendPutRequest(
+                'editGroupForm',
+                '@routes.HomeController.home'
+        )">Сохранить</button>
+        <a href="@routes.HomeController.home" class="btn">Отмена</a>
+    </div>
+}
