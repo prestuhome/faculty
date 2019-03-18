@@ -1,5 +1,6 @@
-@(id: Long, departmentForm: Form[Department])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(id: Long, departmentForm: Form[Department], students: List[Student])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
+@import views.html.students.departmentStudentTable
 @import helper._
 
 @main("Кафедра") {
@@ -9,8 +10,9 @@
             @inputText(departmentForm("name"), '_label -> "Наименование")
         </fieldset>
     }
+    @departmentStudentTable(id, students)
     <div>
-        <button class="btn btn-primary" onclick="sendPutRequest(
+        <button class="btn btn-primary" onclick="sendFormPutRequest(
                 'editDepartmentForm',
                 '@routes.HomeController.home'
         )">Сохранить</button>

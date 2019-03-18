@@ -12,6 +12,19 @@ function deleteObject(url, redirectUrl) {
 }
 
 function sendPutRequest(url, redirectUrl) {
+    $.ajax({
+        url: url,
+        method: "PUT",
+        success: function() {
+            window.location = redirectUrl;
+        },
+        error: function() {
+            alert("Ошибка");
+        }
+    })
+}
+
+function sendFormPutRequest(url, redirectUrl) {
     var form = $('#'+url);
     $.ajax({
         url: form.attr('action'),

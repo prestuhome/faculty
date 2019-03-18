@@ -6,7 +6,7 @@
     <h1>Создание группы</h1>
     @form(routes.GroupController.save(), 'id -> "createGroupForm") {
         <fieldset>
-        @inputText(groupForm("code"), '_label -> "Код")
+            @inputText(groupForm("code"), '_label -> "Код")
         </fieldset>
     }
     <div>

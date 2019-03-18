@@ -1,0 +1,15 @@
+@(departmentId: Long, students: List[Student])
+
+@main("Выбор студента") {
+    <h1>Выбор студента</h1>
+    @for(student <- students) {
+        @defining(s"${student.lastName} ${student.name} ${student.patronymic}") { fullName =>
+            <button class="crud-button" onClick="sendPutRequest(
+                '@routes.StudentController.setStudentDepartment(student.id.get, departmentId)',
+                '@routes.DepartmentController.edit(departmentId)'
+            )">@fullName</button>
+        }
+        <br>
+    }
+    <a href="@routes.DepartmentController.edit(departmentId)" class="btn">Отмена</a>
+}

@@ -33,9 +33,6 @@ class GroupService @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
   def insert(group: Group): Future[Unit] =
     db.run(groups += group).map(_ => ())
 
-  def insert(groups: Seq[Group]): Future[Unit] =
-    db.run(this.groups ++= groups).map(_ => ())
-
   def update(id: Long, group: Group): Future[Unit] = {
     val groupToUpdate: Group = group.copy(Some(id))
     db.run(groups.filter(_.id === id).update(groupToUpdate)).map(_ => ())

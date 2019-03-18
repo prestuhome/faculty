@@ -1,0 +1,23 @@
+@(id: Long, groupId: Long, studentForm: Form[Student])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@import helper._
+
+@main("Студенты") {
+    <h1>Редактирование студента</h1>
+    @form(routes.StudentController.update(id), 'id -> "editStudentForm") {
+        <fieldset>
+            @inputText(studentForm("name"), '_label -> "Имя")
+            @inputText(studentForm("lastName"), '_label -> "Фамилия")
+            @inputText(studentForm("patronymic"), '_label -> "Отчество")
+            <input type="hidden" name="groupId" value='@(studentForm("groupId").value)'>
+            <input type="hidden" name="departmentId" value='@(studentForm("departmentId").value)'>
+        </fieldset>
+    }
+    <div>
+        <button class="btn btn-primary" onclick="sendFormPutRequest(
+                'editStudentForm',
+                '@routes.GroupController.edit(groupId)'
+        )">Сохранить</button>
+        <a href="@routes.GroupController.edit(groupId)" class="btn">Отмена</a>
+    </div>
+}

@@ -12,5 +12,5 @@ create table groups (
 
 # --- !Downs
 
-DROP TABLE departments;
-DROP TABLE groups;
+drop table if exists departments;
+drop table if exists groups;

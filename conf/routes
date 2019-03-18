@@ -1,16 +1,26 @@
-GET     /                           controllers.Default.redirect(to = "/home")
-GET     /home                       controllers.HomeController.home
+GET     /                               controllers.Default.redirect(to = "/home")
+GET     /home                           controllers.HomeController.home
 
-GET     /department                 controllers.DepartmentController.create
-POST    /department                 controllers.DepartmentController.save
-GET     /department/:id             controllers.DepartmentController.edit(id: Long)
-PUT     /department/:id             controllers.DepartmentController.update(id: Long)
-DELETE  /department/:id             controllers.DepartmentController.delete(id: Long)
+GET     /department                     controllers.DepartmentController.create
+POST    /department                     controllers.DepartmentController.save
+GET     /department/:id                 controllers.DepartmentController.edit(id: Long)
+PUT     /department/:id                 controllers.DepartmentController.update(id: Long)
+DELETE  /department/:id                 controllers.DepartmentController.delete(id: Long)
 
-GET     /group                      controllers.GroupController.create
-POST    /group                      controllers.GroupController.save
-GET     /group/:id                  controllers.GroupController.edit(id: Long)
-PUT     /group/:id                  controllers.GroupController.update(id: Long)
-DELETE  /group/:id                  controllers.GroupController.delete(id: Long)
+GET     /group                          controllers.GroupController.create
+POST    /group                          controllers.GroupController.save
+GET     /group/:id                      controllers.GroupController.edit(id: Long)
+PUT     /group/:id                      controllers.GroupController.update(id: Long)
+DELETE  /group/:id                      controllers.GroupController.delete(id: Long)
 
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /student                        controllers.StudentController.create(groupId: Long)
+POST    /student                        controllers.StudentController.save
+GET     /student/:id                    controllers.StudentController.edit(id: Long)
+PUT     /student/:id                    controllers.StudentController.update(id: Long)
+DELETE  /student/:id                    controllers.StudentController.delete(id: Long)
+
+GET     /department/students/:id        controllers.StudentController.listStudentsToChoose(id: Long)
+PUT     /department/student/:id         controllers.StudentController.setStudentDepartment(studentId: Long, id: Long)
+DELETE  /department/student/:id         controllers.StudentController.removeStudentFromDepartment(id: Long)
+
+GET     /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)

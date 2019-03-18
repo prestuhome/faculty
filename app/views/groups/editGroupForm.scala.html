@@ -1,16 +1,18 @@
-@(id: Long, groupForm: Form[Group])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@(id: Long, groupForm: Form[Group], students: List[Student])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
+@import views.html.students.studentCrudTable
 @import helper._
 
 @main("Группы") {
     <h1>Редактирование группы</h1>
     @form(routes.GroupController.update(id), 'id -> "editGroupForm") {
         <fieldset>
-        @inputText(groupForm("code"), '_label -> "Код")
+            @inputText(groupForm("code"), '_label -> "Код")
         </fieldset>
     }
+    @studentCrudTable(id, students)
     <div>
-        <button class="btn btn-primary" onclick="sendPutRequest(
+        <button class="btn btn-primary" onclick="sendFormPutRequest(
                 'editGroupForm',
                 '@routes.HomeController.home'
         )">Сохранить</button>

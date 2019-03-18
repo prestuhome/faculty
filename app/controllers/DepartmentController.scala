@@ -6,17 +6,18 @@ import play.api.data.Form
 import play.api.data.Forms.{longNumber, mapping, nonEmptyText, optional}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, ControllerComponents}
-import services.DepartmentService
+import services.{DepartmentService, StudentService}
 import views.html.departments._
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class DepartmentController @Inject()(
   cc: ControllerComponents,
-  departmentService: DepartmentService
+  departmentService: DepartmentService,
+  studentService: StudentService
 )(implicit exec: ExecutionContext)
   extends AbstractController(cc)
-  with I18nSupport {
+    with I18nSupport {
 
   val form = Form(
     mapping(
@@ -26,17 +27,23 @@ class DepartmentController @Inject()(
   )
 
   def edit(id: Long) = Action.async { implicit request =>
-    val departmentOpt = departmentService.findById(id)
+    val departmentAndStudents = for {
+      department <- departmentService.findById(id)
+      students <- studentService.findByDepartmentId(id)
+    } yield (department, students)
 
-    departmentOpt.map {
-      case Some(department) => Ok(editDepartmentForm(id, form.fill(department)))
-      case None => NotFound
+    departmentAndStudents.map {
+      case (department, students) =>
+        department match {
+          case Some(d) => Ok(editDepartmentForm(id, form.fill(d), students))
+          case None => NotFound
+        }
     }
   }
 
   def update(id: Long) = Action.async { implicit request =>
     form.bindFromRequest.fold(
-      formWithErrors => Future.successful(BadRequest(editDepartmentForm(id, formWithErrors))),
+      formWithErrors => studentService.findByDepartmentId(id).map(students => BadRequest(editDepartmentForm(id, formWithErrors, students))),
       department => {
         for {
           _ <- departmentService.update(id, department)
@@ -49,7 +56,7 @@ class DepartmentController @Inject()(
     Future.successful(Ok(createDepartmentForm(form)))
   }
 
-  def save() = Action.async { implicit rs =>
+  def save() = Action.async { implicit request =>
     form.bindFromRequest.fold(
       formWithErrors => Future.successful(BadRequest(createDepartmentForm(formWithErrors))),
       department => {

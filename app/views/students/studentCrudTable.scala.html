@@ -1,0 +1,37 @@
+@(groupId: Long, students: List[Student])
+
+<h1>Студенты</h1>
+<a href="@routes.StudentController.create(groupId)" class="btn">
+    <input type="image" src="@routes.Assets.versioned("images/create.png")"/>
+</a>
+<table>
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th class="button-cell"></th>
+            <th class="button-cell"></th>
+        </tr>
+    </thead>
+    <tbody>
+    @for(student <- students) {
+        <tr>
+            @defining(s"${student.lastName} ${student.name} ${student.patronymic}") { fullName =>
+                <td>@fullName</td>
+            }
+            <td class="button-cell">
+                <a href="@routes.StudentController.edit(student.id.get)" class="btn">
+                    <input type="image" src="@routes.Assets.versioned("images/edit.svg")"/>
+                </a>
+            </td>
+            <td class="button-cell">
+                <button class="crud-button" onClick="deleteObject(
+                        '@routes.StudentController.delete(student.id.get)',
+                        '@routes.GroupController.edit(groupId)'
+                )">
+                    <input type="image" src="@routes.Assets.versioned("images/delete.png")"/>
+                </button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

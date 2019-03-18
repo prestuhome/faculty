@@ -6,14 +6,15 @@ import play.api.data.Form
 import play.api.data.Forms.{longNumber, mapping, nonEmptyText, optional}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, ControllerComponents}
-import services.GroupService
+import services.{GroupService, StudentService}
 import views.html.groups._
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class GroupController @Inject()(
   cc: ControllerComponents,
-  groupService: GroupService
+  groupService: GroupService,
+  studentService: StudentService
 )(implicit exec: ExecutionContext)
   extends AbstractController(cc)
     with I18nSupport {
@@ -26,17 +27,23 @@ class GroupController @Inject()(
   )
 
   def edit(id: Long) = Action.async { implicit request =>
-    val groupOpt = groupService.findById(id)
+    val groupAndStudents = for {
+      group <- groupService.findById(id)
+      students <- studentService.findByGroupId(id)
+    } yield (group, students)
 
-    groupOpt.map {
-      case Some(group) => Ok(editGroupForm(id, form.fill(group)))
-      case None => NotFound
+    groupAndStudents.map {
+      case (group, students) =>
+        group match {
+          case Some(g) => Ok(editGroupForm(id, form.fill(g), students))
+          case None => NotFound
+        }
     }
   }
 
   def update(id: Long) = Action.async { implicit request =>
     form.bindFromRequest.fold(
-      formWithErrors => Future.successful(BadRequest(editGroupForm(id, formWithErrors))),
+      formWithErrors => studentService.findByGroupId(id).map(students => BadRequest(editGroupForm(id, formWithErrors, students))),
       group => {
         for {
           _ <- groupService.update(id, group)
@@ -49,7 +56,7 @@ class GroupController @Inject()(
     Future.successful(Ok(createGroupForm(form)))
   }
 
-  def save() = Action.async { implicit rs =>
+  def save() = Action.async { implicit request =>
     form.bindFromRequest.fold(
       formWithErrors => Future.successful(BadRequest(createGroupForm(formWithErrors))),
       group => {

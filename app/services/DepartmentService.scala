@@ -33,9 +33,6 @@ class DepartmentService @Inject()(protected val dbConfigProvider: DatabaseConfig
   def insert(department: Department): Future[Unit] =
     db.run(departments += department).map(_ => ())
 
-  def insert(departments: Seq[Department]): Future[Unit] =
-    db.run(this.departments ++= departments).map(_ => ())
-
   def update(id: Long, department: Department): Future[Unit] = {
     val departmentToUpdate: Department = department.copy(Some(id))
     db.run(departments.filter(_.id === id).update(departmentToUpdate)).map(_ => ())

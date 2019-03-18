@@ -1,6 +1,6 @@
 package models
 
 case class Department(
-  id: Option[Long],
-  name: String
+  id: Option[Long] = None,
+  name: String = ""
 )

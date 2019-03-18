@@ -6,7 +6,7 @@
     <h1>Создание кафедры</h1>
     @form(routes.DepartmentController.save(), 'id -> "createDepartmentForm") {
         <fieldset>
-        @inputText(departmentForm("name"), '_label -> "Наименование")
+            @inputText(departmentForm("name"), '_label -> "Наименование")
         </fieldset>
     }
     <div>

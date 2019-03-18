@@ -1,0 +1,23 @@
+@(groupId: Long, studentForm: Form[Student])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@import helper._
+
+@main("Студенты") {
+    <h1>Создание студента</h1>
+    @form(routes.StudentController.save, 'id -> "createStudentForm") {
+        <fieldset>
+            @inputText(studentForm("name"), '_label -> "Имя")
+            @inputText(studentForm("lastName"), '_label -> "Фамилия")
+            @inputText(studentForm("patronymic"), '_label -> "Отчество")
+            <input type="hidden" name="groupId" value='@groupId'>
+            <input type="hidden" name="departmentId" value='@(studentForm("departmentId").value)'>
+        </fieldset>
+    }
+    <div>
+        <button class="btn btn-primary" onclick="sendPostRequest(
+            'createStudentForm',
+            '@routes.GroupController.edit(groupId)'
+        )">Сохранить</button>
+        <a href="@routes.GroupController.edit(groupId)" class="btn">Отмена</a>
+    </div>
+}
